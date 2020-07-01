@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ContinentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ContinentRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=ContinentRepository::class)
+ * @ApiResource(
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"}
+ * )
  */
 class Continent
 {

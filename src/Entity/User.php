@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ /**
+ *  @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource(
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"}
+ * )
  */
 class User implements UserInterface
 {
@@ -52,14 +57,19 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\OneToOne(targetEntity=Country::class, cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
      */
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Hobbies::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Hobbies::class, mappedBy="user",cascade={"persist"})
      */
     private $hobbies;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $registeredAt;
 
     public function __construct()
     {
@@ -180,12 +190,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCountry(): ?Country
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(?Country $country): self
+    public function setCountry(string $country): self
     {
         $this->country = $country;
 
@@ -219,6 +229,18 @@ class User implements UserInterface
                 $hobby->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegisteredAt(): ?\DateTimeInterface
+    {
+        return $this->registeredAt;
+    }
+
+    public function setRegisteredAt(\DateTimeInterface $registeredAt): self
+    {
+        $this->registeredAt = $registeredAt;
 
         return $this;
     }

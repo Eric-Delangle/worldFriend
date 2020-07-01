@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\HobbiesRepository;
+use App\Repository\PaysRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
-  /**
- * @ORM\Entity(repositoryClass=HobbiesRepository::class)
+ /**
+ * @ORM\Entity(repositoryClass=PaysRepository::class)
  * @ApiResource(
  *  collectionOperations={"GET"},
  *  itemOperations={"GET"}
  * )
  */
-class Hobbies
+class Pays
 {
     /**
      * @ORM\Id()
@@ -26,12 +26,6 @@ class Hobbies
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="hobbies",cascade={"persist"})
-     */
-    private $user;
-
 
     public function getId(): ?int
     {
@@ -49,17 +43,4 @@ class Hobbies
 
         return $this;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
 }

@@ -11,10 +11,13 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarColor01">
                 <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                    <a className="nav-link" href="#">Accueil <span className="sr-only">(current)</span></a>
+                <NavLink to="/" className="btn btn-primary">Accueil<span className="sr-only">(current)</span></NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Pays</a>
+                <NavLink to="/CountryPage" className="btn btn-primary">Pays</NavLink>
+                </li>
+                <li className="nav-item">
+                <NavLink to="/UsersPage" className="btn btn-primary">Utilisateurs</NavLink>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" href="#">Langues</a>
@@ -31,7 +34,7 @@ const Navbar = () => {
                             <a className="nav-link" href="#"> Inscription</a>
                             </li>
                             <li className="nav-item">
-                            <a className="nav-link" href="/login"> Connexion</a>
+                                <NavLink to="/loginPage" className="btn btn-primary">Connexion</NavLink>
                             </li>
                             <li className="nav-item">
                                 <button className="btn btn-danger">Déconnexion</button>

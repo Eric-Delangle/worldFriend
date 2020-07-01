@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import Field from "../components/forms/Field";
 import { toast } from "react-toastify";
 
-const LoginPage = ({ history }) => {
-    const { setIsAuthenticated } = useContext(AuthContext);
+const LoginPage = (props) => {
+
     const [credentials, setCredentials] = useState( {
         username: "",
         password: ""
@@ -33,6 +33,7 @@ const LoginPage = ({ history }) => {
     }
     return ( 
     <>
+    <div className="jumbotron mt-5 ml-5 mr-5">
         <h1>Connectez vous au monde !</h1>
         <form onSubmit= { handleSubmit }>
 
@@ -60,6 +61,7 @@ const LoginPage = ({ history }) => {
                 </button>
             </div>
         </form>
+        </div>
     </>
      );
 }
