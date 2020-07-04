@@ -35,9 +35,10 @@ class AppFixtures extends Fixture
         $continents =['Europe', 'Asie', 'Afrique', 'Amérique du nord', 'Amérique du sud'] ;
         
 
-        foreach($continents as $name){
+     foreach($continents as $name){
             $continent = new Continent();
             $continent->setName($name); 
+            $continent->setPays($faker->country); 
             $manager->persist($continent);
             $manager->flush();
         }
@@ -53,12 +54,14 @@ class AppFixtures extends Fixture
                         ->setCity($faker->city)
                         ->setPassword($hash)          
                         ->setCountry( $faker->country)
+                        ->setContinent($continent->getName() )
                         ->setEmail($faker->email)
                         ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now') );
 
                         for($p = 0; $p < 1; $p++) {
                             $country = new Pays();
                             $country->setName($user->getCountry());
+                            $country->setContinent($continent);
                             $manager->persist($country);
                         }
 

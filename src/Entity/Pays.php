@@ -27,6 +27,11 @@ class Pays
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Continent::class, inversedBy="pays", cascade={"persist", "remove"})
+     */
+    private $continent;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +45,18 @@ class Pays
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getContinent(): ?Continent
+    {
+        return $this->continent;
+    }
+
+    public function setContinent(?Continent $continent): self
+    {
+        $this->continent = $continent;
 
         return $this;
     }

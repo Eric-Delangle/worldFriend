@@ -27,6 +27,12 @@ class Continent
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=Pays::class, mappedBy="continent" , cascade={"persist", "remove"})
+     */
+    private $pays;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +46,18 @@ class Continent
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
 
         return $this;
     }

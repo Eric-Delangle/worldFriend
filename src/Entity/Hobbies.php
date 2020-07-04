@@ -3,14 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\HobbiesRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
   /**
  * @ORM\Entity(repositoryClass=HobbiesRepository::class)
- * @ApiResource(
- *  collectionOperations={"GET"},
- *  itemOperations={"GET"}
+ *  @ApiResource(
+ *  subresourceOperations = {
+ *      "api_users_hobbies_get_subresource" = {
+ *              "normalization_context" = {"groups"= {"hobbies_subresource"}, "enable_max_depth" = true}
+ *   },
+ * },
+ *  normalizationContext ={"groups" = {"hobbies_read"}}
  * )
  */
 class Hobbies
@@ -24,11 +29,13 @@ class Hobbies
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"users_read", "hobbies_read"}),
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="hobbies",cascade={"persist"})
+     * @groups({"users_read", "hobbies_read"}),
      */
     private $user;
 

@@ -6,14 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 
  /**
- *  @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
- *  collectionOperations={"GET"},
- *  itemOperations={"GET"}
+ *  collectionOperations={"GET", "POST"},
+ *  itemOperations={"GET", "PUT", "DELETE"},
+ *  subresourceOperations={
+ *  "force_eager"=false,
+ *      "hobbies_get_subresource"={"path"="/users/{id}/hobbies"}
+ *  },
+ *  normalizationContext={
+ *      "groups"={"users_read"},"enable_max_depth" = true,
+ *  }
  * )
  */
 class User implements UserInterface
@@ -22,11 +31,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @groups({"users_read", "hobbies_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @groups({"users_read", "hobbies_read"})
      */
     private $email;
 
@@ -43,26 +54,32 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"users_read", "hobbies_read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"users_read", "hobbies_read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"users_read", "hobbies_read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"users_read", "hobbies_read"})
      */
     private $country;
 
     /**
      * @ORM\OneToMany(targetEntity=Hobbies::class, mappedBy="user",cascade={"persist"})
+     * @groups({"users_read"}),
+     * @ApiSubresource
      */
     private $hobbies;
 
@@ -70,6 +87,13 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $registeredAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToOne(targetEntity=Continent::class, cascade={"persist", "remove"})
+     * @groups({"users_read", "hobbies_read"})
+     */
+    private $continent;
 
     public function __construct()
     {
@@ -241,6 +265,18 @@ class User implements UserInterface
     public function setRegisteredAt(\DateTimeInterface $registeredAt): self
     {
         $this->registeredAt = $registeredAt;
+
+        return $this;
+    }
+
+    public function getContinent(): ?string
+    {
+        return $this->continent;
+    }
+
+    public function setContinent(string $continent): self
+    {
+        $this->continent = $continent;
 
         return $this;
     }
