@@ -35,51 +35,37 @@ class AppFixtures extends Fixture
         $continents =['Europe', 'Asie', 'Afrique', 'Amérique du nord', 'Amérique du sud'] ;
         
 
-     foreach($continents as $name){
-            $continent = new Continent();
-            $continent->setName($name); 
-            $continent->setPays($faker->country); 
-            $manager->persist($continent);
-            $manager->flush();
-        }
-        
-       
+                //pour chaque pays je veux des users
+                            for ($u = 0; $u < 10; $u++) {
+                                $user = new User();
+                                $hash = $this->encoder->encodePassword($user, 'password');
+                                $user->setFirstName($faker->firstName)
+                                            ->setLastName($faker->lastName)
+                                            ->setCity($faker->city)
+                                            ->setPassword($hash)          
+                                            ->setCountry( $faker->country)
+                                            ->setEmail($faker->email)
+                                            ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now') )  
+                                            ->setContinent($faker->randomElement($continents));
+                         
+                                            // pour chaque user je veux un ou plusieurs hobbies
+                                            for ($h = 0; $h < mt_rand(1, 5) ; $h++) {
+                                                $hobbies = new Hobbies();
+                                                $hobbies->setName($faker->randomElement(['Cuisine', 'Art', 'Voyage', 'Sciences', 'Sport']));
+                                                $hobbies->setUser($user);
+                                                 $manager->persist($hobbies);
+                                                }
 
-
-        for ($u = 0; $u < 10; $u++) {
-            $user = new User();
-            $hash = $this->encoder->encodePassword($user, 'password');
-            $user->setFirstName($faker->firstName)
-                        ->setLastName($faker->lastName)
-                        ->setCity($faker->city)
-                        ->setPassword($hash)          
-                        ->setCountry( $faker->country)
-                        ->setContinent($continent->getName() )
-                        ->setEmail($faker->email)
-                        ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now') );
-
-                        for($p = 0; $p < 1; $p++) {
-                            $country = new Pays();
-                            $country->setName($user->getCountry());
-                            $country->setContinent($continent);
-                            $manager->persist($country);
+                                              
+                                                $manager->persist($user);
                         }
-
-                        for ($h = 0; $h < 1 ; $h++) {
-                            $hobbies = new Hobbies();
-                            $hobbies->setName($faker->randomElement(['Cuisine', 'Art', 'Voyage', 'Sciences', 'Sport']));
-                             $manager->persist($hobbies);
-                            }
-
-                         $user->addHobby($hobbies);
-                         $pays[] = $user->getCountry();
-                        $manager->persist($user);
-                        
                     
-                }
-            
-            
-        $manager->flush();
-    }
-}
+                    $manager->flush();
+            }
+        }
 
+
+
+
+
+       

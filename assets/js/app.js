@@ -7,6 +7,7 @@ import '../css/app.css';
 import HomePage from './pages/HomePage';
 import CountryPage from './pages/CountryPage';
 import UsersPage from './pages/UsersPage';
+import MemberPage from './pages/MemberPage';
 
 /*
  * Welcome to your app's main JavaScript file!
@@ -33,6 +34,7 @@ const App = ()=> {
                     <Route path="/loginPage" component= {LoginPage}/>
                     <Route path="/CountryPage" component= {CountryPage}/>
                     <Route path="/UsersPage" component= {UsersPage}/>
+                    <Route path="/MemberPage" component= {MemberPage}/>
                     <Route path="/" component= {HomePage}/>
             </Switch>
         </main>

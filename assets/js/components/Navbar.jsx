@@ -20,6 +20,9 @@ const Navbar = () => {
                 <NavLink to="/UsersPage" className="btn btn-primary">Utilisateurs</NavLink>
                 </li>
                 <li className="nav-item">
+                <NavLink to="/MemberPage" className="btn btn-primary">Votre espace</NavLink>
+                </li>
+                <li className="nav-item">
                     <a className="nav-link" href="#">Langues</a>
                 </li>
                 <li className="nav-item">

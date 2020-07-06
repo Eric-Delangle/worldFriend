@@ -90,10 +90,10 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\OneToOne(targetEntity=Continent::class, cascade={"persist", "remove"})
      * @groups({"users_read", "hobbies_read"})
      */
     private $continent;
+
 
     public function __construct()
     {
@@ -280,4 +280,5 @@ class User implements UserInterface
 
         return $this;
     }
+
 }

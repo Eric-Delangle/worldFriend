@@ -42,7 +42,12 @@ useEffect(()=> {
                                 <td>{ user.country}</td>
                                 <td>{ user.continent}</td>
 
-                                <td>{user.hobbies[0].name}</td>
+                                {user.hobbies.map( hobbie => ( 
+                                    <td key={ hobbie.id }>{hobbie.name}</td>
+                                ))}
+                                        
+                
+                                
                          
                                
                             
