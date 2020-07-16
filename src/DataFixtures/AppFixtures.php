@@ -45,7 +45,7 @@ class AppFixtures extends Fixture
                                             ->setPassword($hash)          
                                             ->setCountry( $faker->country)
                                             ->setEmail($faker->email)
-                                            ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now') )  
+                                          //  ->setRegisteredAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now') )  
                                             ->setContinent($faker->randomElement($continents));
                          
                                             // pour chaque user je veux un ou plusieurs hobbies

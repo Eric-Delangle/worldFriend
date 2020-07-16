@@ -83,10 +83,6 @@ class User implements UserInterface
      */
     private $hobbies;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $registeredAt;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -257,17 +253,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRegisteredAt(): ?\DateTimeInterface
-    {
-        return $this->registeredAt;
-    }
-
-    public function setRegisteredAt(\DateTimeInterface $registeredAt): self
-    {
-        $this->registeredAt = $registeredAt;
-
-        return $this;
-    }
 
     public function getContinent(): ?string
     {

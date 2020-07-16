@@ -1,21 +1,31 @@
 import React, { useEffect, useState} from 'react';
 import axios from "axios";
+import UsersApi from '../services/UsersApi';
+import { ToastContainer, toast } from "react-toastify";
 
-const UsersPage = (props) => {
+const UsersPage = ({ history}) => {
 
     const  [users, setUsers] = useState([]);
    
- 
+   // Récuperation de  la liste des utilisateurs. 
+   const fetchUsers = async () => { 
+    try { 
+        const data  = await UsersApi.findAll();
+        setUsers(data);
+       // setLoading(false);
+    } catch (error) {
+        toast.error("La liste des utilisateurs n'a pas pu être chargée");
+       history.replace("/homePage");
+    }
+}
 
 
-{/* Appel axios pour recevoir la liste des users*/}
-useEffect(()=> {
-    axios
-        .get("http://localhost:8000/api/users")
-        .then(response => response.data["hydra:member"])
-        .then(data => setUsers(data))
+{/* Appel UsersApi pour recevoir la liste des users*/}
+useEffect(  ()=> {
+fetchUsers();
      
 }, []);
+
 
     return ( 
         <>
@@ -42,15 +52,10 @@ useEffect(()=> {
                                 <td>{ user.country}</td>
                                 <td>{ user.continent}</td>
 
-                                {user.hobbies.map( hobbie => ( 
-                                    <td key={ hobbie.id }>{hobbie.name}</td>
-                                ))}
-                                        
-                
-                                
+                                { user.hobbies.map( hobbie => 
+                                    <td >{hobbie.name}</td>
+                                )}
                          
-                               
-                            
                                 </tr>
                                 
                             </tbody>
