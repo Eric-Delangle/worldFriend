@@ -24,7 +24,6 @@ async function find(id) {
     .then(response => {
        const user =  response.data;
        Cache.set("user." + id, user);
-  console.log(user);
        return user;
        
     } );

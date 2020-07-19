@@ -1,9 +1,30 @@
 body {
     background-color: lightgray;
+  margin: 0;
 }
 
+.navbar {
+    width: 100vw;
+}
 #skype {
     width: 350px;
     height: 300px;
     background-color: black;
+}
+
+#map {
+
+    
+    height: 900px;
+    z-index: 1;
+
+}
+
+#app {
+    position: absolute;
+    z-index: 9;
+}
+
+.jumbotron {
+   opacity: 0.8;
 }

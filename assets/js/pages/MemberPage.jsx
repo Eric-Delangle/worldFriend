@@ -57,15 +57,25 @@ const MemberPage = ({ history }) => {
 
 
       for(let i in infos[0]){
+
+        //console.log(user.hobbies);
     
-             console.log(infos[i][0].name);
-       
-       
-          var passions =  infos[i][0].name;
+             //console.log(infos[i]); //  console.log(infos[i][0].name) me donne le premier hobbie de la liste
+
+             for(let j = 0; j < user.hobbies.length; j++) {
+
+                console.log(user.hobbies[j].name)
+            
+                var passions =  user.hobbies[j].name;
+            
+            }
+    // console.log(passions);
+
      
      }
- 
-
+   
+   
+     
     return (
   
         <>
@@ -79,7 +89,7 @@ const MemberPage = ({ history }) => {
                         <h5 className="card-title">Centre(s) d'interêt(s)</h5>
                         <p>
                                 
-                                     {passions}
+         {passions}
                              
                        </p>
                         
@@ -89,6 +99,9 @@ const MemberPage = ({ history }) => {
                         <div className="mt-5 mb-3 align-items-center">
                             <p>Ville: { user.city }</p>
                             <p>Pays: { user.country }</p>
+                        </div>
+                        <div className="mt-5 mb-3 align-items-center">
+                            <p>Vos amis:</p>
                         </div>
                     </div>
 
