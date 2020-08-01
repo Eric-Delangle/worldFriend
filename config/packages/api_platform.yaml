@@ -7,3 +7,7 @@ api_platform:
         versions: [3]
     eager_loading:
          force_eager: false 
+
+    collection:
+        pagination:
+            enabled: false

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Field from '../components/forms/Field';
 import { Link } from 'react-router-dom';
 
-const EditMemberPage = (props) => {
+const EditMemberPage = ({history}) => {
 
     const [user, setUser] = useState([
         {
@@ -15,30 +15,61 @@ const EditMemberPage = (props) => {
         }
     ]);
 
+    const [ errors, setErrors] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        city: "",
+        coutry: "",
+        hobbies: [{}]
+    })
+
+    const [ editing, setEditing] =useState(false);
+    const [ loading, setLoading ] = useState(false);
+
       // Gestion des changements des inputs dans le formulaire.
       const handleChange = ({ currentTarget }) => {
         const { name, value }= currentTarget;
         setUser({ ...user, [name] : value });
     }
 
-/*
-    const { violations } = error.response.data;
 
-    if (violations) {
+      // Gestion de la soumission du formulaire
+      const handleSubmit = async event => {
+        event.preventDefault();
 
-        violations.forEach(violation => {
-            apiErrors[violation.propertyPath] = violation.message;
-        });
-        setErrors(apiErrors);
-    }
-    toast.error("Il y a des erreurs dans votre formulaire !");
-*/
+                    try {
+                        setErrors({});
+                
+                            if (editing) {
+                            UsersApi.update(id, user);
+                            
+                            toast.success("Votre profil a bien été modifié");
+                            history.replace("/MemberPage");
+                            } 
+                            }catch ({ response }) {
+                                console.log(response);
+                                    const { violations } = response.data;
+                            
+                                    if (violations) {
+                                    const apiErrors = {};
+                                    violations.forEach(({ propertyPath, message }) => {
+                                        apiErrors[propertyPath] = message;
+                                    });
+                    
+                            setErrors(errors);
+                            toast.error("Des erreurs dans votre formulaire !");
+                            }
+                        }
+                        setLoading(true);
+                        setEditing(true);
+                    }
 
             return (
                 <>
                 <h1>Modification de votre profil.</h1>
-
-                <form >
+                {!loading && <form onSubmit= { handleSubmit }>
+                
                     <Field
                         name="firstName"
                         label="Prénom"
@@ -100,23 +131,16 @@ const EditMemberPage = (props) => {
                         value={user.passwordConfirm}
                         onChange={handleChange}
                     />
-                    <Field
-                        name="continent"
-                        label="Continent"
-                        placeholder="Votre continent"
-                     //   error={errors.continent}
-                        value={user.continent}
-                        onChange={handleChange}
-                    />
+    
                     <div className="form-group">
                         <button type="submit" className="btn btn-success">
                             Enregistrer
                         </button>
                         <Link to="/MemberPage" className="btn btn-link">Retourner sur le profil</Link>
                     </div>
-                </form>
+                </form>}
     </>
     )
-}
+            }
 
 export default EditMemberPage;

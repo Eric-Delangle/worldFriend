@@ -15,13 +15,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
  *  collectionOperations={"GET", "POST"},
- *  itemOperations={"GET", "PUT", "DELETE"},
+ *  itemOperations={"GET", "PUT", "DELETE", "POST"},
  *  subresourceOperations={
  *  "force_eager"=false,
  *      "hobbies_get_subresource"={"path"="/users/{id}/hobbies"}
  *  },
  *  normalizationContext={
- *      "groups"={"users_read"},"enable_max_depth" = true,
+ *      "groups"={"users_read", "hobbies_read"},"enable_max_depth" = true,
  *  }
  * )
  */

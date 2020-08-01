@@ -10,6 +10,7 @@ use App\Entity\Hobbies;
 use App\Entity\Continent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -36,7 +37,7 @@ class AppFixtures extends Fixture
         
 
                 //pour chaque pays je veux des users
-                            for ($u = 0; $u < 10; $u++) {
+                            for ($u = 0; $u < 100; $u++) {
                                 $user = new User();
                                 $hash = $this->encoder->encodePassword($user, 'password');
                                 $user->setFirstName($faker->firstName)

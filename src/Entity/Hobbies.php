@@ -15,7 +15,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *              "normalization_context" = {"groups"= {"hobbies_subresource"}, "enable_max_depth" = true}
  *   },
  * },
- *  normalizationContext ={"groups" = {"hobbies_read"}}
+ *  normalizationContext ={"groups" = {"hobbies_read", "users_read"}}
  * )
  */
 class Hobbies

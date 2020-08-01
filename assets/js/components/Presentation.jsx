@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Presentation = (props) => {
     return (
@@ -8,7 +9,7 @@ const Presentation = (props) => {
     <hr className="my-4"/>
   
     <p className="lead">
-      <a className="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
+      <NavLink to="/explain" className="btn btn-primary">En savoir plus</NavLink>
     </p>
   </div>  );
 }
