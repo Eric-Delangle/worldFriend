@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cache from "./Cache";
 import { HOBBIES_API } from "../config";
+import { USERS_API } from "../config";
 
 // Afficher tous les hobbies
 async function findAll () {
@@ -16,7 +17,7 @@ async function findAll () {
         });
 }
 
-// Afficher les hobbies d'un utilisateur selon son id
+// Afficher un hobbie en fonction de son id
 async function find(id) {
     const cachedHobbie = await Cache.get("hobbies." + id);
     if(cachedHobbie) return cachedHobbie;
@@ -32,19 +33,29 @@ async function find(id) {
     } );
 }
 
-// Créer un hobbie
-function create (hobbie) {
+// Afficher la liste des hobbies de l'ustilisateur connecté
+async function findUserHobbies(userId) {
+    const cachedHobbie = await Cache.get("users." +  userId);
+    if(cachedHobbie) return cachedHobbie;
 
-    console.log(hobbie);
-    return axios.post(HOBBIES_API ,  hobbie ).then( async response =>{
-        const cachedHobbie = await Cache.get("hobbie" );
-        if (cachedHobbie) {
-            Cache.set("hobbie" ,  [...cachedHobbie, response.data]);
-        }
-        console.log(response);
-        return response;
-    })
+    return axios
+    .get(USERS_API + "/"  +  userId)
+    .then(response => {
+       const hobbie =  response.data;
+       Cache.set("user." + userId, hobbie);
+       return hobbie;
+       
+    } );
 }
+
+// Créer un hobbie
+function create (hobbie, userId) {
+    return axios.post(HOBBIES_API,{
+        ...hobbie,
+        user:  `/api/users/${userId}`
+    });
+}
+
 
 // Mettre à jour un hobbie
 function update (userId, hobbie) {
@@ -75,5 +86,6 @@ export default {
     find,
     update,
     create,
-    deleteHobbie
+    deleteHobbie,
+    findUserHobbies
 };

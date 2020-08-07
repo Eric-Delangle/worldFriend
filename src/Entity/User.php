@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
  *  collectionOperations={"GET", "POST"},
- *  itemOperations={"GET", "PUT", "DELETE", "POST"},
+ *  itemOperations={"GET", "PUT"},
  *  subresourceOperations={
  *  "force_eager"=false,
  *      "hobbies_get_subresource"={"path"="/users/{id}/hobbies"}
@@ -78,7 +78,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Hobbies::class, mappedBy="user",cascade={"persist"})
-     * @groups({"users_read"}),
+     * @groups({"users_read", "hobbies_read"}),
      * @ApiSubresource
      */
     private $hobbies;

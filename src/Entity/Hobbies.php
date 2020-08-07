@@ -24,6 +24,7 @@ class Hobbies
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @groups({"users_read", "hobbies_read"}),
      */
     private $id;
 

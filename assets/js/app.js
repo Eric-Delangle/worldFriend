@@ -64,4 +64,4 @@ const rootElement = document.querySelector("#app");
 ReactDOM.render(<App />, rootElement);
 
 // la j'appelle ma classe Main qi v'a m'instancier les classes dont j'ai besoin ( pour l'instant uniquement la map)
-// new Main();
+ new Main();

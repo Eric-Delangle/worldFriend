@@ -4,14 +4,8 @@ import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
 import HobbiesApi from '../services/HobbiesApi';
 import jwt_decode from "jwt-decode";
-import UsersApi from '../services/UsersApi';
 
 const EditLoisirPage = ({ history }) => {
-
-    const [loading, setLoading] = useState(false);
-    const [hobbie, setHobbie] = useState([]);
-    const [user, setUser] = useState([]);
-    const [errors, setErrors] = useState({})
 
     // je récupere le token 
     const jwt = window.localStorage.getItem("authToken");
@@ -20,54 +14,61 @@ const EditLoisirPage = ({ history }) => {
     const decoded = jwt_decode(jwt);
 
     // j'en extrait l'id
-    const id = decoded.id;
+    const userId = decoded.id;
 
-    // Gestion des changements des inputs dans le formulaire.
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        setHobbie({ ...hobbie, [name]: value });
-    }
+    const [loading, setLoading] = useState(false);
 
-    // Récuperation des données du membre 
-    async function fetchUser(id) {
+    const [hobbies, setHobbies] = useState([]); // la c'est pour afficher la liste des hobbies
+
+    const [hobbie, setHobbie] = useState( // la c'est pour gérer l'ajout d'un hobbie
+        {
+            name: ""
+        }
+    );
+
+    const [errors, setErrors] = useState({
+        id: "",
+        name: ""
+
+    });
+
+    // Récuperation des hobbies du membre 
+    async function fetchHobbies() {
         try {
-            const { firstName, lastName, email, city, country, hobbies } = await UsersApi.find(id);
-            setUser({ firstName, lastName, email, city, country, hobbies });
-            console.log(hobbies);
-     
-
+            const hobbies = await HobbiesApi.findUserHobbies(userId);
+            setHobbies(hobbies);
         } catch (error) {
             console.log(error.response);
         }
 
     }
 
+    // Récupération de la liste des hobbies à chaque chargement du composant.
     useEffect(() => {
 
-        fetchUser(id);
+        fetchHobbies(userId);
 
-    }, [id]);
+    }, [userId]);
 
-  
-
+    // Gestion des changements des inputs dans le formulaire.
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        setHobbie({ ...hobbies, [name]: value });
+    }
 
     // Gestion de la soumission du formulaire
     const handleSubmit = async event => {
         event.preventDefault();
 
         try {
+
             setErrors({});
-
-            HobbiesApi.create(hobbie);
-
-            console.log(hobbie);
-
+            HobbiesApi.create({ name: hobbie.hobbies }, userId);
+            setHobbie({ name: hobbie.hobbies }, userId);
+            fetchHobbies(userId);
             toast.success("Votre loisir a bien été enregistré");
-            history.replace("/EditLoisirPage");
 
         } catch ({ response }) {
-            console.log(hobbies);
-            console.log(user);
 
             const { violations } = response.data;
 
@@ -76,44 +77,38 @@ const EditLoisirPage = ({ history }) => {
                 violations.forEach(({ propertyPath, message }) => {
                     apiErrors[propertyPath] = message;
                 });
-
                 setErrors(errors);
                 toast.error("Des erreurs dans votre formulaire !");
             }
 
         }
+
         setLoading(true);
 
     }
 
     // Gestion de la suppression d'un hobbie.
     const handleDelete = async id => {
-        console.log(user.hobbies);
-        /*
-   user.hobbies && user.hobbies.map(hobbie => { 
-            <p key = {hobbie.id}>{console.log(hobbie[user.hobbies = {"hobbies": id}] ) }</p>
-        })
-        /*
-        const originalHobbies = [...hobbies];
-        setHobbies(hobbies.filter(hobbie => hobbie.id !== id));
-        console.log(originalHobbies);
+
+        const originalHobbies = [...hobbies.hobbies];
+        setHobbies(hobbies.hobbies.filter(hobbies => hobbies.id !== id));
 
         try {
             await HobbiesApi.deleteHobbie(id);
             toast.success("Le hobbie a bien été supprimé.");
+            fetchHobbies(userId);
+            history.replace("/editloisir");
         } catch (error) {
             toast.error("Une erreur est survenue");
-            console.log(error.response);
-            console.log(originalHobbies);
             setHobbies(originalHobbies);
         }
-*/
+
     }
 
     return (
         <>
             <h1>Gestion de vos loisirs.</h1>
-            {!loading && <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
 
                 <Field
                     name="hobbies"
@@ -130,7 +125,7 @@ const EditLoisirPage = ({ history }) => {
                     </button>
                     <Link to="/MemberPage" className="btn btn-link">Retourner sur le profil</Link>
                 </div>
-            </form>}
+            </form>
             <div className="card-body">
                 <table className="table table-hover">
                     <thead>
@@ -140,26 +135,19 @@ const EditLoisirPage = ({ history }) => {
                     </thead>
                     <tbody className="white">
 
-                        
-                            {user.hobbies && user.hobbies.map(hobbie => 
-                           
-                                <tr className="table-primary">
- 
-                                    <td key={hobbie.id}>
-                                            {hobbie.name}
-                                    </td>
-                                    <td>{hobbie.id}</td>
-                                    <td>
-                                        <button onClick={() => handleDelete(hobbie.id)} className="btn btn-sm btn-danger">
-                                                Supprimer
+                        {hobbies.hobbies && hobbies.hobbies.map(hobbie =>
+
+                            <tr className="table-primary" key={hobbie.id}>
+                                <td>
+                                    {hobbie.name}
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDelete(hobbie.id)} className="btn btn-sm btn-danger">
+                                        Supprimer
                                         </button>
-                                    </td>
-                                    </tr>
-                            )}
-
-
-                        
-
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

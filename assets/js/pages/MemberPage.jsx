@@ -62,7 +62,7 @@ const MemberPage = (props) => {
                             })}
                         </div>
                         <p>
-                            <Link to="/editloisir" className="btn-sm btn-primary">Ajouter des centres d'intérêts</Link>
+                            <Link to="/editloisir" className="btn-sm btn-primary">Gérer vos centres d'intérêts</Link>
                         </p>
 
                         <div id="skype">
